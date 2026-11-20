@@ -97,6 +97,8 @@ src/
   path.c/.h      UTF-16 パス正規化、拡張子判定、ファイルの照合
   dispatch.c/.h  IDispatch 呼び出し、VARIANT とエラー処理、IMessageFilter
   office.c/.h    アプリ取得、既存文書確認、Open、読み取り専用判定と表示
+  OfficeReadOnly.rc / OfficeReadOnly.manifest
+                 実行権限と長いパスの対応を宣言する Win32 リソース
 bin/
   OfficeReadOnly.exe
   obj/           中間オブジェクト
@@ -104,7 +106,7 @@ bin/
 
 `MAKEFILE` と `README.md` をルートに置く。設計書は `doc`、ソースは `src`、ビルド生成物と必要に応じたバイナリは `bin` に置く。ソース分割は上記のファイル単位で始める。サブフォルダーが必要になった場合は VS Code の Material Icon Theme が認識する名前を選ぶ。
 
-64bit の w64devkit シェルで `gcc -dumpmachine` が `x86_64-w64-mingw32` を示すことを確認し、`make -f MAKEFILE` でビルドする。コンパイル時に `-std=c11 -O2 -Wall -Wextra -Wpedantic -DUNICODE -D_UNICODE -D_WIN32_WINNT=0x0A00` を指定し、リンク時は `-municode -mwindows` と `-lole32 -loleaut32 -lshell32 -luser32 -luuid` を使う。ライブラリはオブジェクトの後ろに置く。`objdump -f` と `objdump -p` で x64 の PE と Windows GUI サブシステムを確認する。
+64bit の w64devkit シェルで `gcc -dumpmachine` が `x86_64-w64-mingw32` を示すことを確認し、`make -f MAKEFILE` でビルドする。コンパイル時に `-std=c11 -O2 -Wall -Wextra -Wpedantic -DUNICODE -D_UNICODE -D_WIN32_WINNT=0x0A00` を指定する。実行マニフェストは `windres` で取り込む。リンク時は `-municode -mwindows` と `-lole32 -loleaut32 -lshell32 -luser32 -lgdi32 -luuid` を使う。ライブラリはオブジェクトの後ろに置く。`objdump -f` と `objdump -p` で x64 の PE と Windows GUI サブシステムを確認する。
 
 ## 8. Windows 11 の「送る」への登録
 
@@ -127,3 +129,7 @@ Windows 11 とデスクトップ版 Office を使用する。結果とあわせ�
 - [ ] UNC と、同じ共有先を割り当てたドライブの両方から開く。共有先のファイルを編集中の場合やアクセス権がない場合も確認する。
 
 異常系は、引数なし、存在しないパス、ディレクトリ、破損ファイル、パスワード入力のキャンセル、Office 未インストールまたは COM 起動失敗、`ReadOnly` の取得失敗、マクロ設定の取得・設定・復元失敗を試す。COM の一時拒否では指定時間内の復帰と上限到達の両方を確認する。正常時と `Open` 失敗時の両方で `AutomationSecurity` が元の値に戻ることも確認する。実機で再現しづらい COM エラーは `IDispatch` のテスト用実装で戻り値を差し替え、エラー表示と後続処理を確かめる。
+
+## Git workflow
+
+Develop on `dev`. Use the `hiraken0427` identity and write commit messages, pull request titles and descriptions, and GitHub comments in English.

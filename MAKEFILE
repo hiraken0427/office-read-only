@@ -1,0 +1,31 @@
+CC = gcc
+WINDRES = windres
+
+CPPFLAGS += -DUNICODE -D_UNICODE -D_WIN32_WINNT=0x0A00 -DCOBJMACROS -DWIN32_LEAN_AND_MEAN
+CFLAGS += -std=c11 -O2 -Wall -Wextra -Wpedantic
+LDLIBS += -lole32 -loleaut32 -lshell32 -luser32 -lgdi32 -luuid
+
+target := bin/OfficeReadOnly.exe
+sources := src/main.c src/path.c src/dispatch.c src/office.c
+objects := $(sources:src/%.c=bin/obj/%.o)
+resource := bin/obj/OfficeReadOnly.res.o
+
+.PHONY: all clean
+all: $(target)
+
+$(target): $(objects) $(resource)
+	$(CC) $(LDFLAGS) -municode -mwindows -o $@ $^ $(LDLIBS)
+
+bin/obj/%.o: src/%.c MAKEFILE | bin/obj
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -c $< -o $@
+
+$(resource): src/OfficeReadOnly.rc src/OfficeReadOnly.manifest MAKEFILE | bin/obj
+	$(WINDRES) -I src -O coff -i $< -o $@
+
+bin/obj:
+	mkdir -p $@
+
+clean:
+	rm -f $(target) $(objects) $(objects:.o=.d) $(resource)
+
+-include $(objects:.o=.d)
