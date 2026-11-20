@@ -1,6 +1,6 @@
 # Office Read-Only
 
-Open Excel, Word, and PowerPoint files in read-only mode from the Windows 11 File Explorer **Send to** menu. You can select several files at once, including files with Japanese names or paths on network shares. Office still allows **Save As**.
+Open Excel, Word, and PowerPoint files in read-only mode from the Windows 11 File Explorer **Send to** menu. You can select several files at once, including files with paths on network shares. Office still allows **Save As**.
 
 | App | Supported extensions |
 | --- | --- |
@@ -10,15 +10,13 @@ Open Excel, Word, and PowerPoint files in read-only mode from the Windows 11 Fil
 
 ## Build
 
-Use 64-bit w64devkit on Windows 11. Install the desktop editions of the Office apps you want to use.
-
-Run the build from the w64devkit shell.
+Run the build from the shell.
 
 ```sh
-make -f MAKEFILE
+make
 ```
 
-The build writes `bin/OfficeReadOnly.exe`. To remove the generated files, run `make -f MAKEFILE clean`.
+The build writes `bin/OfficeReadOnly.exe`. To remove the generated files, run `make -f clean`.
 
 ## Add to the Send to menu
 
