@@ -32,5 +32,3 @@ The shortcut is installed for your user account and requires no administrator ri
 - When Office already has the selected file open read-only, the launcher reuses that window if it can identify it. If it finds the file open for editing, it skips the file and keeps the existing edits.
 - When a file opens in Protected View, it stays in Protected View. Excel's Automation security setting has an exception for Excel 4.0 (XLM) macros, which can trigger an Office prompt.
 - The launcher reports files it could not open or verify in a single Japanese-language dialog. Close the document in Office when you finish viewing it.
-
-The [design and Windows acceptance checklist](doc/design.md) covers COM behavior, Office settings, and error cases.
