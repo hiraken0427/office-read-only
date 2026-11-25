@@ -19,7 +19,7 @@ $(target): $(objects) $(resource)
 bin/obj/%.o: src/%.c MAKEFILE | bin/obj
 	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -c $< -o $@
 
-$(resource): src/OfficeReadOnly.rc src/OfficeReadOnly.manifest MAKEFILE | bin/obj
+$(resource): src/OfficeReadOnly.rc src/OfficeReadOnly.manifest office-read-only.ico MAKEFILE | bin/obj
 	$(WINDRES) -I src -O coff -i $< -o $@
 
 bin/obj:
